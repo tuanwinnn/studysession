@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Study Sessions - StudySync{% endblock %}
+
+{% block content %}
+<div class="sessions-page">
+    <h1>Study Sessions</h1>
+    <p>Browse and join upcoming study sessions for your courses.</p>
+    
+    <div class="session-list">
+        <div class="session-card">
+            <h3>Midterm Review - CS 101</h3>
+            <p><strong>When:</strong> Thursday, 3:00 PM - 5:00 PM</p>
+            <p><strong>Where:</strong> Library Room 204</p>
+            <p><strong>Topic:</strong> Chapters 1-5</p>
+            <p><strong>Created by:</strong> John D.</p>
+            <p><strong>Participants:</strong> 3 joined</p>
+            <button class="btn">Join Session</button>
+        </div>
+        
+        <div class="session-card">
+            <h3>Problem Set Help - MATH 201</h3>
+            <p><strong>When:</strong> Friday, 2:00 PM - 4:00 PM</p>
+            <p><strong>Where:</strong> Student Center, Table 12</p>
+            <p><strong>Topic:</strong> Integration techniques</p>
+            <p><strong>Created by:</strong> Sarah M.</p>
+            <p><strong>Participants:</strong> 2 joined</p>
+            <button class="btn">Join Session</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
