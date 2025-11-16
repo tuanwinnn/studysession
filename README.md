@@ -74,9 +74,11 @@ studysession/
 
 ## Screenshot
 
-![studysession Home Page](screenshot.png)
+![Home Page](homePage.png)
 
-*Note: Add a screenshot of the running application here*
+![Login Page](loginPage.png)
+
+![Study Sessions Page](studySessions.png)
 
 ## Team Roles
 
