@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}StudySync{% endblock %}</title>
+    <title>{% block title %}Study Sessions{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <nav>
-        <div class="nav-brand">StudySync</div>
+        <div class="nav-brand">Study Sessions</div>
         <ul class="nav-links">
             <li><a href="{{ url_for('main.index') }}">Home</a></li>
             <li><a href="{{ url_for('main.feature') }}">Sessions</a></li>
