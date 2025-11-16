@@ -6,14 +6,14 @@ A course-integrated study session coordination platform where students can creat
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone <repo-url>
 cd studysession
 ```
 
 2. Create a virtual environment (optional but recommended):
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate.bat
 ```
 
 3. Install dependencies:
