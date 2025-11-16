@@ -1,4 +1,4 @@
-# StudySync
+# Studysession
 
 A course-integrated study session coordination platform where students can create and join study sessions with classmates.
 
@@ -7,7 +7,7 @@ A course-integrated study session coordination platform where students can creat
 1. Clone the repository:
 ```bash
 git clone <your-repo-url>
-cd studysync
+cd studysession
 ```
 
 2. Create a virtual environment (optional but recommended):
@@ -36,7 +36,7 @@ flask run
 ## Project Structure
 
 ```
-studysync/
+studysession/
 ├── app/
 │   ├── __init__.py          # App factory pattern for flexible configuration
 │   ├── config.py            # Centralized configuration (SQLite URI, secrets)
@@ -74,7 +74,7 @@ studysync/
 
 ## Screenshot
 
-![StudySync Home Page](screenshot.png)
+![studysession Home Page](screenshot.png)
 
 *Note: Add a screenshot of the running application here*
 
