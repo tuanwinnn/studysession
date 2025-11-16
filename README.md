@@ -82,7 +82,9 @@ studysession/
 
 ## Team Roles
 
-- **[Your Name]** - Full stack development, architecture design
+- Tuan Nguyen - Developer
+- Carlie Yem - Developer
+- Jongha Kim - Developer
 
 ## Tech Stack
 
