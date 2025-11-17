@@ -1,0 +1,38 @@
+App Name: Studying Sessions App
+
+Problem Statement: Currently, Canvas has no native tools for students to coordinate informal study sessions with classmates. Students use Discord, but general chats are too broad, not everyone checks them, and tracking individual sessions becomes chaotic. This makes it difficult to find study partners with compatible schedules, leading to isolation and everyone just doing their own thing.
+
+Proposed Solution: Study sessions would be integrated into the course, so only students enrolled in the course can see them. Students can create study sessions at specific times and broadcast what / where / when they plan to study. Optionally, they can also tag specific topics or assignments they want to work on. Other enrolled students can browse upcoming sessions and join ones that fit their schedule and needs. The main idea is to make it easier to find study partners in your class. 
+For M2, the focus will be on core CRUD operations: creating sessions, joining/leaving sessions, and viewing session details. M3 will add user authentication, course enrollment verification, and filtering/search capabilities. The app will use Flask with SQLAlchemy for data persistence, keeping the architecture simple and maintainable. 
+
+Primary Users: 
+Students
+Need to find study partners without awkward outreach
+Need to see what times work for multiple people
+Teaching Assistants:
+Need to see what topics students are struggling with based on session frequency
+Need to optimally promote their office hours or review sessions
+
+MVP Features: 
+ Students can view all upcoming study sessions for a course
+ Students can create a study session with a date, time, and location
+ Students can add an optional topic or assignment tag to a session
+ Students can join an existing study session
+Students can leave a session they previously joined
+Students can view the list of participants in a session
+Students can delete a study session they created
+Students can edit details of their own session
+Students can filter sessions by date
+Students can filter sessions by topic/assignment
+Systems prevent joining sessions that have already occurred
+Systems shows the session creator's name
+
+Stretch Goals: 
+Recurring session support (ex, “Every Tuesday 3-5 PM)
+Session chat/comments for coordination before meeting
+Integration with the school room booking system for automatic location suggestions
+
+Success Criteria: 
+Demo: creating and joining a study session 
+Display a filtered view of sessions by topic, showing only relevant results
+Demonstrate session lifecycle: creating, joining, completing, and cleaning up
