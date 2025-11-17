@@ -9,4 +9,5 @@ def login():
     if form.validate_on_submit():
         flash('Not implemented', 'info')
         return redirect(url_for('auth.login'))
+    # Renders if the login validation fails
     return render_template('auth/login.html', form=form)
