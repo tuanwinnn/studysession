@@ -2,6 +2,8 @@
 
 A course-integrated study session coordination platform where students can create and join study sessions with classmates.
 
+Google Doc: https://docs.google.com/document/d/1iHBsqym4T0VoHqEuDuFzItrlC4IJMhldQqj5BU9CPhY/edit?usp=sharing 
+
 ## Setup and Installation
 
 1. Clone the repository:
