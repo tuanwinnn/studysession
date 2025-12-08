@@ -4,8 +4,7 @@ from .config import Config
 from .models import db, User
 
 login_manager = LoginManager()
-login_manager.LoginView = 'auth.login'
-login_manager.LoginMessage = "Please log in to access this page."
+
 
 def create_app():
     app = Flask(__name__)
