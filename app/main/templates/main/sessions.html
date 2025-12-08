@@ -43,7 +43,7 @@
                 <p><strong>Topic:</strong> {{ session.topic }}</p>
                 <p><strong>Created by:</strong> {{ session.creator }}</p>
                 <p><strong>Participants:</strong> {{ session.participant_count }} joined</p>
-                <form action="{{ url_for('join_session', session_id=session.id) }}" method="POST">
+                <form action="{{ url_for('main.join_session', session_id=session.id) }}" method="POST">
                     <button class="btn join-btn">Join Session</button>
                 </form>
             </div>

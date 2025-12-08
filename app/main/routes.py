@@ -14,7 +14,7 @@ def feature():
 
  #This is the page that displays study sessions, only viewable if user is logged in other wise prompts to log in
 @main_bp.route('/sessions')
-@login_required
+#@login_required # -- LOGIN REQURIRED, IGNORED FOR DEMO PURPOSES -- #
 def view_session():
     #Sessions user has joined
     joined = StudySession.query.filter(StudySession.members.any(id=current_user.id)).all()
