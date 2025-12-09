@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ session.title }} - Study Sessions{% endblock %}
+
+{% block content %}
+<div class="session-detail">
+    <h1>{{ session.title }}</h1>
+    
+    <!-- Basic session info -->
+    <div class="session-info">
+        <p><strong>Date:</strong> {{ session.date.strftime('%B %d, %Y') }}</p>
+        <p><strong>Time:</strong> {{ session.time }}</p>
+        <p><strong>Location:</strong> {{ session.location }}</p>
+        {% if session.topic %}
+            <p><strong>Topic:</strong> {{ session.topic }}</p>
+        {% endif %}
+        <p><strong>Created by:</strong> {{ session.creator.username }}</p>
+        <p><strong>Created on:</strong> {{ session.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+    </div>
+    
+    <!-- Participants list -->
+    <div class="participants-section">
+        <h2>Participants ({{ session.get_participant_count() }})</h2>
+        <ul class="participant-list">
+            {% for member in session.members %}
+                <li>
+                    {{ member.username }}
+                    {% if member.id == session.creator_id %}
+                        <span class="badge">Creator</span>  <!-- Highlight session creator -->
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Action buttons based on user role/status -->
+    <div class="button-group">
+        <a href="{{ url_for('main.view_sessions') }}" class="btn btn-secondary">Back to Sessions</a>
+        
+        {% if is_creator %}
+            <!-- Creator controls -->
+            <a href="{{ url_for('main.edit_session', session_id=session.id) }}" class="btn">Edit Session</a>
+            <form action="{{ url_for('main.delete_session', session_id=session.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this session?');">
+                <button class="btn btn-danger">Delete Session</button>
+            </form>
+        {% elif is_member %}
+            <!-- Leave if user is a participant -->
+            <form action="{{ url_for('main.leave_session', session_id=session.id) }}" method="POST" style="display:inline;">
+                <button class="btn leave-btn">Leave Session</button>
+            </form>
+        {% else %}
+            <!-- Join if user is not a member and session is upcoming -->
+            {% if not session.is_past() %}
+                <form action="{{ url_for('main.join_session', session_id=session.id) }}" method="POST" style="display:inline;">
+                    <button class="btn join-btn">Join Session</button>
+                </form>
+            {% else %}
+                <span class="past-session">This session has already occurred</span>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

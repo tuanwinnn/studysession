@@ -4,9 +4,18 @@
 
 {% block content %}
 <div class="hero">
+    <!-- Main landing headline -->
     <h1>Welcome to Study Sessions</h1>
     <p>Find study partners in your courses. Create sessions, join others, and collaborate.</p>
-    <!-- Button on home page, goes to view_sessions page which prompts user to log in -->
-    <a href="{{ url_for('main.feature') }}" class="btn">View Study Sessions</a>
+    
+    {% if current_user.is_authenticated %}
+        <!-- Actions for logged-in users -->
+        <a href="{{ url_for('main.view_sessions') }}" class="btn">View Study Sessions</a>
+        <a href="{{ url_for('main.create_session') }}" class="btn btn-secondary">Create a Session</a>
+    {% else %}
+        <!-- Call-to-action for guests -->
+        <a href="{{ url_for('auth.register') }}" class="btn">Get Started</a>
+        <a href="{{ url_for('main.feature') }}" class="btn btn-secondary">View Demo</a>
+    {% endif %}
 </div>
 {% endblock %}

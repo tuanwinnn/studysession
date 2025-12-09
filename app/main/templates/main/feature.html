@@ -1,32 +1,49 @@
 {% extends "base.html" %}
 
-{% block title %}Study Sessions - Study Sessions{% endblock %}
+{% block title %}Demo - Study Sessions{% endblock %}
 
 {% block content %}
-<div class="sessions-page (Demo Page)">
-    <h1>Study Sessions</h1>
-    <p>Browse and join upcoming study sessions for your courses.</p>
+<div class="sessions-page">
+    <h1>Study Sessions (Demo Page)</h1>
+    <!-- Demo notice + CTA to register -->
+    <p>This is a demo showing what study sessions look like. <a href="{{ url_for('auth.register') }}">Register</a> to create and join real sessions!</p>
     
+    <!-- Static demo sessions (no real data) -->
     <div class="session-list">
         <div class="session-card">
             <h3>Midterm Review - CS 101</h3>
-            <p><strong>When:</strong> Thursday, 3:00 PM - 5:00 PM</p>
+            <p><strong>When:</strong> December 15, 2024 at 3:00 PM - 5:00 PM</p>
             <p><strong>Where:</strong> Library Room 204</p>
             <p><strong>Topic:</strong> Chapters 1-5</p>
             <p><strong>Created by:</strong> John D.</p>
             <p><strong>Participants:</strong> 3 joined</p>
-            <button class="btn">Join Session</button>
+            <button class="btn" disabled>Join Session (Demo)</button>
         </div>
         
         <div class="session-card">
             <h3>Problem Set Help - MATH 201</h3>
-            <p><strong>When:</strong> Friday, 2:00 PM - 4:00 PM</p>
+            <p><strong>When:</strong> December 16, 2024 at 2:00 PM - 4:00 PM</p>
             <p><strong>Where:</strong> Student Center, Table 12</p>
             <p><strong>Topic:</strong> Integration techniques</p>
             <p><strong>Created by:</strong> Sarah M.</p>
             <p><strong>Participants:</strong> 2 joined</p>
-            <button class="btn">Join Session</button>
+            <button class="btn" disabled>Join Session (Demo)</button>
         </div>
+        
+        <div class="session-card">
+            <h3>Final Exam Study Group - CMPE 131</h3>
+            <p><strong>When:</strong> December 18, 2024 at 5:00 PM - 7:00 PM</p>
+            <p><strong>Where:</strong> Engineering Building 189</p>
+            <p><strong>Topic:</strong> Software Engineering Concepts</p>
+            <p><strong>Created by:</strong> Alex K.</p>
+            <p><strong>Participants:</strong> 5 joined</p>
+            <button class="btn" disabled>Join Session (Demo)</button>
+        </div>
+    </div>
+    
+    <!-- Extra CTA at bottom -->
+    <div style="margin-top: 2rem; text-align: center;">
+        <a href="{{ url_for('auth.register') }}" class="btn">Register to Get Started</a>
     </div>
 </div>
 {% endblock %}

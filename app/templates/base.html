@@ -2,21 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Responsive layout on mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Page title block (overridden by child templates) -->
     <title>{% block title %}Study Sessions{% endblock %}</title>
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <!-- Top navigation bar -->
     <nav>
         <div class="nav-brand">Study Sessions</div>
         <ul class="nav-links">
             <li><a href="{{ url_for('main.index') }}">Home</a></li>
-            <li><a href="{{ url_for('main.view_session') }}">Sessions</a></li>
-            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+            {% if current_user.is_authenticated %}
+                <!-- Links visible only to logged-in users -->
+                <li><a href="{{ url_for('main.view_sessions') }}">Sessions</a></li>
+                <li><a href="{{ url_for('main.create_session') }}">Create Session</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout ({{ current_user.username }})</a></li>
+            {% else %}
+                <!-- Links for guests -->
+                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+            {% endif %}
         </ul>
     </nav>
     
     <main>
+        <!-- Flash messages (with category-based styling) -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -25,6 +38,7 @@
             {% endif %}
         {% endwith %}
         
+        <!-- Main page content injected by child templates -->
         {% block content %}{% endblock %}
     </main>
 </body>

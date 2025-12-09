@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Create Session - Study Sessions{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Create a Study Session</h1>
+    <!-- Form for creating a new study session -->
+    <form method="POST" action="{{ url_for('main.create_session') }}">
+        {{ form.hidden_tag() }}  <!-- CSRF + hidden fields -->
+        
+        <!-- Title field -->
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control", placeholder="e.g., Midterm Review - CS 101") }}
+            {% if form.title.errors %}
+                <div class="error">
+                    {% for error in form.title.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Date field -->
+        <div class="form-group">
+            {{ form.date.label }}
+            {{ form.date(class="form-control", placeholder="YYYY-MM-DD") }}
+            {% if form.date.errors %}
+                <div class="error">
+                    {% for error in form.date.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Time field -->
+        <div class="form-group">
+            {{ form.time.label }}
+            {{ form.time(class="form-control", placeholder="3:00 PM - 5:00 PM") }}
+            {% if form.time.errors %}
+                <div class="error">
+                    {% for error in form.time.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Location field -->
+        <div class="form-group">
+            {{ form.location.label }}
+            {{ form.location(class="form-control", placeholder="Library Room 204") }}
+            {% if form.location.errors %}
+                <div class="error">
+                    {% for error in form.location.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Topic field (optional) -->
+        <div class="form-group">
+            {{ form.topic.label }}
+            {{ form.topic(class="form-control", placeholder="Chapters 1-5") }}
+            {% if form.topic.errors %}
+                <div class="error">
+                    {% for error in form.topic.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Submit / cancel buttons -->
+        <div class="form-group">
+            {{ form.submit(class="btn") }}
+            <a href="{{ url_for('main.view_sessions') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

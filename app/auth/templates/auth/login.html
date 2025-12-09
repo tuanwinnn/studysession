@@ -5,36 +5,39 @@
 {% block content %}
 <div class="form-container">
     <h1>Login</h1>
+    <!-- Login form posts to auth.login -->
     <form method="POST" action="{{ url_for('auth.login') }}">
-        {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}  <!-- CSRF token + hidden fields -->
         
         <div class="form-group">
-            {{ form.email.label }}
-            {{ form.email(class="form-control") }}
+            {{ form.email.label }}  <!-- Email label -->
+            {{ form.email(class="form-control") }}  <!-- Email input -->
             {% if form.email.errors %}
                 <div class="error">
                     {% for error in form.email.errors %}
-                        <span>{{ error }}</span>
+                        <span>{{ error }}</span>  <!-- Show email validation errors -->
                     {% endfor %}
                 </div>
             {% endif %}
         </div>
         
         <div class="form-group">
-            {{ form.password.label }}
-            {{ form.password(class="form-control") }}
+            {{ form.password.label }}  <!-- Password label -->
+            {{ form.password(class="form-control") }}  <!-- Password input -->
             {% if form.password.errors %}
                 <div class="error">
                     {% for error in form.password.errors %}
-                        <span>{{ error }}</span>
+                        <span>{{ error }}</span>  <!-- Show password validation errors -->
                     {% endfor %}
                 </div>
             {% endif %}
         </div>
         
         <div class="form-group">
-            {{ form.submit(class="btn") }}
+            {{ form.submit(class="btn") }}  <!-- Submit button -->
         </div>
     </form>
+    <!-- Link to registration page -->
+    <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
 </div>
 {% endblock %}
