@@ -99,8 +99,12 @@ studysession/
 │   └── static/              # CSS and static files
 │       └── styles.css       # Application styling
 ├── tests/
-│   ├── __init__.py
-│   └── test_app.py          # Unit tests
+│   ├── __init__.py          # Marks tests as a package
+│   ├── conftest.py          # Shared fixtures (app, db, client, sample user/session)
+│   ├── test_models.py       # Models: User & StudySession (login, CRUD, relationships)
+│   ├── test_forms.py        # Forms: Session, login, registration validation
+│   ├── test_auth.py         # Auth routes: /login, /register, /logout behavior
+│   └── test_routes.py       # Protected routes, session CRUD, join/leave logic
 ├── instance/
 │   └── studysessions.db     # SQLite database (auto-created)
 ├── run.py                   # Application entry point
