@@ -2,8 +2,8 @@
 
 A course-integrated study session coordination platform where students can create and join study sessions with classmates.
 
-Google Doc M1: https://docs.google.com/document/d/1iHBsqym4T0VoHqEuDuFzItrlC4IJMhldQqj5BU9CPhY/edit?usp=sharing 
-Google Doc M2: https://docs.google.com/document/d/1KkmVYkP5u-_XDMYnVV7Wmhy7TZEdqt3Dd5rEI2x9ZnY/edit?usp=sharing 
+- Google Doc M1: [Link](https://docs.google.com/document/d/1iHBsqym4T0VoHqEuDuFzItrlC4IJMhldQqj5BU9CPhY/edit?usp=sharing)
+- Google Doc M2: [Link](https://docs.google.com/document/d/1KkmVYkP5u-_XDMYnVV7Wmhy7TZEdqt3Dd5rEI2x9ZnY/edit?usp=sharing)
 
 ## M2 Features Implemented
 
