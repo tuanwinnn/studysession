@@ -1,0 +1,243 @@
+﻿App Name: Study Session Scheduler
+Carlie Yem (016901638)
+Tuan Nguyen (ID 015 103 816)
+Jongha Kim (017774822) 
+
+
+1. Documentation
+A. Updated Concept Overview
+The Study Session App continues to focus on the gap in Canvas where students lack a structured way to form informal study groups within a course. As development has progressed, the purpose has narrowed into a clearer niche. Which is providing a low pressure, course specific environment where students can discover or host study sessions without needing to reach out directly or rely on unorganized Discord channels. This refined focus emphasizes reducing the social friction and scheduling difficulties that prevent collaboration, we aim to help students coordinate efficiently around shared topics, assignment, or exam preparation. 
+
+
+Progress since Milestone 1:
+        The project has a functioning Flask application using the app factory pattern and clearly separated blueprints for authentication and main features. User registration, login, and logout are fully operational using Flask_Login. Including route protection that prevents unauthenticated access to session pages. Core functionality for study sessions is working: students can create, view, edit, and delete sessions. The system correctly stores session details such as date, time location, and optional topic tags. The join/leave system also functions, enabling students to join sessions they are interested in and leave ones they are no longer interested in. The sessions page dynamically displays both joined sessions and available sessions. The app ensures students cannot join past sessions. Templates extend a shared base.html, creating a consistent layout across the application. 
+
+
+B. Use Cases (1-6)
+Use Case 1: Schedule a New Study Session
+Summary:
+        A student creates a new study session for a course, specifying the time, location, and optional topics/assignment tag
+Actors: 
+* Student
+* System
+Pre-Conditions:
+* The student is logged in.
+* Student is enrolled in the course
+* Student is on the “Create Session” page
+Trigger:
+* Student wants to organize a study session that is sharable with classmates, clicks “Create Session” on page
+Primary Sequence:
+1. The student opens “Create Session” 
+2. System displays a form for a date, start time, location, duration, and optional tag
+3. Student enters the session’s date and start time
+4. Students enter the location
+5. Student enters optional topic/assignment tag
+6. Student submit form by selecting Create Session
+7. System validates all fields are present 
+8. Systems checks that the session time is in the future 
+9. System Saves 
+Post Conditions:
+* New study session is stored and visible to all students
+Use Case 2: View & Filter Sessions
+Summary:
+        Student view all upcoming study sessions for their course and optionally filter by date or topic
+Actors:
+* Student
+* System
+Pre-Conditions
+* At least one study session exists 
+* Student is on the “Sessions” page
+* Student is logged into an account
+Triggers:
+* Students needs to see available study sessions or search for a specific topic/time
+Primary Sequence:
+1. Student opens the sessions page
+2. The system retrieves all the student’s study sessions from the database
+3. System displays all upcoming & past sessions
+4. Student selects a session that has not happened yet
+5. Student can select a filter or category
+6. System will display only sessions that fit criteria outlined by the student
+Alternative Sequence:
+        6. No sessions fit filter(s) selected 
+1. No sessions match the filters → displays “No sessions found”
+Post Conditions:
+* Join Study Session
+Use Case 3: View or Filter Upcoming Study Sessions
+Summary: Student sees a refined or fell set of sessions depending on filters applied 
+Actor(s):
+* Student
+* System
+Pre-Conditions:
+* Student is enrolled in the course
+* Session exists and is upcoming 
+* Student is not already a participant
+Trigger:
+* Student decides they want to attend a specific study session
+Primary Sequence:
+1. Student opens the details page for a study session
+2. System displays time, location, topic, and participant list
+3. Student selects Join Session
+4. System checks that the session is still in the future
+5. System verifies the student is not already on the participant list
+6. System adds the student’s ID to the session’s participants
+7. System updates the participant count
+8. System retrieves the updated participant list
+9. System refreshes the details page
+10. System displays the confirmation that the student has joined the session
+Post Conditions:
+* Student is now listed as a participant is the session
+Use Case 4: Edit or Cancel Existing Sessions
+Summary: A student removes themselves from a study session they previously joined
+Actors:
+* Student
+* System
+Pre-Conditions:
+* Student is currently a participant in the session
+* Session is in the future
+Trigger:
+* Student no longer plans to attend the session → session options → cancel session
+OR
+* Student wants to make edits to session details they created
+Primary Sequence:
+1.  Student selects a session to modify
+2. Student chooses: Edit or Delete
+3. IF EDIT IS SELECTED
+   1. System prompts for changes
+   2. Student enter updated details
+   3. System checks for conflicts 
+   4. System updates 
+4. IF DELETE IS SELECTED
+   1. System prompts user with session deletion confirmation
+   2. Student selects “yes” (if yes they want to delete) 
+   3. System will delete session (unrecoverable)
+5. System confirms that changes are completed
+Alternative Sequence:
+      3. c. Conflicts are found and prompts user to enter new details that are not conflicting with other sessions they’re enrolled in
+     4. b. Student selects “no” to deny confirmation for session deletion
+         c. (Alternative) System displays the denied confirmation
+Post-Conditions:
+* Session is updated or removed from the schedule 
+
+
+Use Case 5: Join a Study Session
+Summary: A student joins an existing session
+Actor:
+* Student
+* System
+Pre-Condition:
+* Student is enrolled in the course the session is for
+* Session is in the future
+* Student is on the session details page
+Trigger: Student decides they want to participate in a study session
+Primary Sequence:
+1. Student clicks “Join Session”
+2. System checks if the session is in the future and student is enrolled in the course necessary
+3. System adds the student to the participants list
+4. System updates the session details with the new participant
+5. System adds session to Student’s personal sessions
+6. System displays the
+Post-Conditions:
+* Student is marked as attending they study session
+
+
+Use Case 6: View Session Participants and Details
+Summary: Student views the full details for a study session, including time, location, topic, and participant list
+Actor:
+* Student
+* System
+Pre-Condition:
+* Session exists
+* Student is enrolled in the course
+Trigger: Student clicks on study session to learn more about it 
+Primary Sequence:
+1. Student selects a session from the session list
+2. System loads session details
+3. System displays the full participants list “Yes” and “Maybe” 
+4. System shows a Join/Leave button depending on the student’s status
+Post-Conditions:
+* None, student “gains” better understanding of what a session is about
+
+
+C. Implementation Summary
+Current Status of MVP
+MVP Feature
+	Status
+	View all upcoming study sessions
+	Functional
+	Create a study session with date, time, location
+	Functional
+	Add optional topic or assignment tag
+	Functional
+	Join an existing study session
+	Functional
+	Leave a previously joined session
+	Functional
+	View participant list for a session
+	Functional
+	Delete a study session (creator only)
+	Functional
+	Edit session details (creator only)
+	Functional
+	Filter sessions by date
+	Partial
+	Filter sessions by topic/assignment
+	Partial
+	Prevent joining sessions that have already occurred
+	Functional
+	Display session creator’s name
+	Functional
+	Stretched Goals
+Stretch Goal
+	Status
+	Recurring sessions
+	Not started
+	Session chat/comment system
+	Not started
+	Room booking/location suggestions
+	Not started
+	
+
+Project Structure:
+  
+
+**Taken from our github,visually better formatting
+
+
+Design & Architecture since M1:
+* Full Flask app factory pattern
+* Flask_login handling authenticated user sessions and protect routes
+* Separated code into auth and main blueprints to improve structure & maintainability
+* Validation using WTForms improving reliability for session creation & editing
+* Reusable layouts in base.html and organizing feature specific templates under main
+
+
+D. Testing Plan
+1. Models
+   1. User model (login behavior, relationships, unique constraints) 
+      1. Create users, set and check passwords, and confirm that login-related behavior works (for example, check_password accepts the right password and rejects a wrong one). They will also try to create two users with the same email to make sure the database raises an error and enforces the uniqueness constraint. If users are related to sessions (like joined sessions), tests will add and remove sessions from that relationship and confirm the links are stored correctly.
+   2. StudySession model (CRUD, participants, past/future validation)
+      1. Create a session, read it back, update some fields, and then delete it, confirming each step changes the database as expected. They will attach users as participants and check that members are recorded correctly on the session (and, if you have a backref, on the user). For dates, tests will try to create or validate sessions with a past date and expect them to fail, while sessions with a future date should be accepted.
+2. Forms
+   1. Session creation/edit forms (date validation, required fields)
+      1. Submit valid data (title, future date, location) and check that the form validates successfully. They will then submit missing or empty required fields such as title or location and confirm that the form is invalid and shows errors. To cover date rules, they will submit a past date and confirm that validation fails and that the date field reports an error.
+   2. Login and registration forms (email uniqueness password rules)
+      1. Send valid emails and passwords and check that validation passes. They will then send invalid data, like a bad email format or an empty password, and confirm validation fails with proper errors. For registration, tests will pre-create a user, then submit the form with the same email and check that it is rejected, and they will also use mismatched password and confirm-password fields to verify that password rules are enforced.
+3. Routes/Views
+   1. Authentication routes (/login, /register, /logout)
+      1. Request /auth/login and /auth/register with GET and confirm the pages load and show the correct forms. They will POST valid registration data and then check that a new user exists in the database, and POST valid login data and confirm that the user is logged in (for example, by being redirected away from the login page). They will also log a user out via /auth/logout and then confirm that protected pages behave as if the user is no longer logged in.
+   2. Protected routes using @login_required
+      1. Try to visit pages like /sessions without logging in and confirm that the response is a redirect to the login page. Then they will log in with valid credentials and try again, expecting a normal 200 response and page content.
+   3. Session CRUD routes (create, edit, delete)
+      1. Log in, create a session through the create route, and then confirm the new session exists in the database and belongs to the logged-in user. They will edit the session via the edit route and verify that the changes are saved, then call the delete route and confirm the session has been removed from the database.
+   4. Join/Leave session logic
+      1. Log in, call the join route for a session, and then confirm the user appears in that session’s member list. They will then call the leave route and verify that the user is no longer a member.
+
+
+Test Structure:
+  
+
+**Taken from our github,visually better formatting
+
+
+Testing Framework:
+* The project uses pytest as the primary testing framework.
