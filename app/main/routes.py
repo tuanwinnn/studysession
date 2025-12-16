@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from app.models import StudySession, db
-from app.forms import StudySessionForm
+from app.models import StudySession, SessionComment, db
+from app.forms import StudySessionForm, SessionCommentForm
+from app.main.utils import suggest_location
 from datetime import datetime
 
 # Main blueprint for core app views
@@ -53,6 +54,11 @@ def create_session():
             
             db.session.add(session)
             db.session.commit()
+
+            #Create recurring sessions if applicable
+            if session.is_recurring:
+                create_recurring_sessions(session)
+                db.session.commit()
             
             flash('Study session created successfully!', 'success')
             return redirect(url_for('main.view_sessions'))
@@ -61,6 +67,23 @@ def create_session():
             flash('Invalid date format. Please use YYYY-MM-DD', 'error')
     
     return render_template('main/create_session.html', form=form)
+# CREATE: recurring sessions helper
+def create_recurring_sessions(parent_session, count = 4):
+    delta = datetime(
+        weeks=1 if parent_session.recurrence_interval == 'weekly' else 2)
+    
+    for i in range(1, count + 1):
+        new_session = StudySession(
+            title=parent_session.title,
+            date=parent_session.date + (i * delta),
+            time=parent_session.time,
+            location=parent_session.location,
+            topic=parent_session.topic or '',
+            creator_id=parent_session.creator_id,
+            parent_id=parent_session.id,
+        )
+        db.session.add(new_session)
+    
 
 # UPDATE: Edit a session
 @main_bp.route('/edit_session/<int:session_id>', methods=['GET', 'POST'])
@@ -165,9 +188,40 @@ def session_detail(session_id):
     session = StudySession.query.get_or_404(session_id)
     is_member = current_user in session.members.all()  # whether current user has joined
     is_creator = session.creator_id == current_user.id  # whether current user created it
+    comment_form = SessionCommentForm()
     return render_template(
         'main/session_detail.html',
         session=session,
         is_member=is_member,
-        is_creator=is_creator
+        is_creator=is_creator,
+        comment_form=comment_form
     )
+
+# COMMENT: Add comment to session
+@main_bp.route('/session/<int:session_id>/comment', methods=['POST'])
+@login_required
+def add_comment(session_id):
+    session = StudySession.query.get_or_404(session_id)
+    form = SessionCommentForm()
+    
+    if form.validate_on_submit():
+        comment = SessionComment(
+            content=form.content.data,
+            author_id=current_user.id,
+            session_id=session.id
+        )
+        db.session.add(comment)
+        db.session.commit()
+        flash('Comment added successfully!', 'success')
+    
+    return redirect(url_for('main.session_detail', session_id=session.id))
+
+# LOCATION SUGGESTION: Suggest a location based on topic
+@main_bp.route('/sessions/<int:session_id>/suggest_location')
+@login_required
+def suggest_session_location(session_id):
+    session = StudySession.query.get_or_404(session_id)
+    suggestion = suggest_location(session)
+
+    flash(f'Suggested location: {suggestion}', 'info')
+    return redirect(url_for('main.view_sessions', session_id=session.id))

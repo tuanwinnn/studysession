@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 from app.models import User
 
@@ -36,4 +36,16 @@ class StudySessionForm(FlaskForm):
     time = StringField('Time (e.g., 3:00 PM - 5:00 PM)', validators=[DataRequired(), Length(max=20)])  # time range text
     location = StringField('Location', validators=[DataRequired(), Length(max=200)])   # where the session takes place
     topic = StringField('Topic (Optional)', validators=[Length(max=100)])              # optional topic/subject
+    #Recurring session fields
+    is_recurring = BooleanField('Repeat Session')
+    recurrence_interval = SelectField(
+        'Recurrence Interval', 
+        choices=[('weekly', 'Weekly'), ('biweekly', 'Biweekly'), ('monthly', 'Monthly')])
+    
     submit = SubmitField('Create Session')
+
+class SessionCommentForm(FlaskForm):
+    content = TextAreaField(
+        'Add a comment', 
+        validators=[DataRequired(), Length(max=500)])
+    submit = SubmitField('Post Comment')

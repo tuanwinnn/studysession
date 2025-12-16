@@ -16,6 +16,15 @@
         {% endif %}
         <p><strong>Created by:</strong> {{ session.creator.username }}</p>
         <p><strong>Created on:</strong> {{ session.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+        {% if session.is_recurring %}
+            <p><strong>Recurrence:</strong> This is a recurring session ({{ session.recurrence_interval }})</p>
+        {% endif %}
+        {% if session.parent_id %}
+            <p><strong>Parent Session ID:</strong> {{ session.parent_id }}<strong>This session is part of a recurring series</strong></p>
+        {% endif %}
+        {% if session.is_past() %}
+            <p class="past-session-note">This session has already occurred.</p>
+        {% endif %}
     </div>
     
     <!-- Participants list -->
@@ -32,6 +41,31 @@
             {% endfor %}
         </ul>
     </div>
+
+    <!-- Comments -->
+    <div class="comments">
+        {% for comment in session.comments %}
+            <div class="comment">
+                <strong>{{ comment.user.name }}</strong>
+                <small>{{ comment.timestamp.strftime('%b %d, %I:%M %p') }}</small>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% else %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div> 
+
+    <form method="POST"
+        action="{{ url_for('main.add_comment', session_id=session.id) }}">
+        {{ comment_form.hidden_tag() }}
+        {{ comment_form.content(class="form-control") }}
+        {{ comment_form.submit(class="btn btn-secondary") }}
+    </form>
+
+    <!-- Room Suggestion Button -->
+    <a href="{{ url_for('main.suggest_location', session_id=session.id) }}" class="btn btn-info">
+        Suggest Location
+    </a>
     
     <!-- Action buttons based on user role/status -->
     <div class="button-group">

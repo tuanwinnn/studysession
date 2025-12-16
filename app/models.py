@@ -53,6 +53,11 @@ class StudySession(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # creator user FK
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # when record was created
     
+    # Recurring Session fields
+    is_recurring = db.Column(db.Boolean, default=False)  # is this a recurring session
+    recurrence_interval = db.Column(db.String(20))  # weekly, biweekly, monthly, etc.
+    parent_id = db.Column(db.Integer, db.ForeignKey('study_session.id'))  # parent session FK for recurrence
+
     def get_participant_count(self):
         """Number of users in this session"""
         return self.members.count()
@@ -63,3 +68,14 @@ class StudySession(db.Model):
         
     def __repr__(self):
         return f'<StudySession {self.title}>'
+
+class SessionComment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # comment ID
+    content = db.Column(db.Text, nullable=False)  # comment text
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # when comment was made
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # commenter
+    sesssion_id = db.Column(db.Integer, db.ForeignKey('study_session.id'), nullable=False)  # session commented on
+
+    user = db.relationship('User', backref='comments')  # relationship to User
+    session = db.relationship('StudySession', backref='comments')  # relationship to StudySession

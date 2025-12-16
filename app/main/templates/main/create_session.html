@@ -74,6 +74,21 @@
             {% endif %}
         </div>
         
+        <!-- Recurring session fields -->
+         <div class="form-group">
+            {{ form.is_recurring() }}
+            {{ form.is_recurring.label }}
+        </div>
+
+        <!-- Recurrence Interval -->
+        <div class="form-group">
+            {{ form.recurrence_interval.label }}
+            {{ form.recurrence_interval(class="form-control") }}
+            <small class="form-text">
+                Choose how often this session repeats
+            </small>
+        </div>
+
         <!-- Submit / cancel buttons -->
         <div class="form-group">
             {{ form.submit(class="btn") }}
