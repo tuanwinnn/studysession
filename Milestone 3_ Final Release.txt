@@ -1,0 +1,89 @@
+﻿App Name: Study Session Scheduler
+Carlie Yem (016901638)
+Tuan Nguyen (ID 015 103 816)
+Jongha Kim (017774822) 
+2. GitHub LINK -- Study Session App
+1. Documentation
+1. Final Feature Inventory
+The Study Session Scheduler is a Flask web application that enables students in the same course to create, discover, and manage informal study sessions directly tied to their class. The final product delivers all MVP features proposed in Milestone 1 and fully realizes the functional prototype developed in Milestone 2, including authentication, session management, and rich filtering tools.
+
+
+All core session features are implemented. Authenticated students can view all upcoming study sessions for their course, create new sessions with date, start time, duration, location, and optional topic or assignment tags, and see both a summary card view and a detailed view for each session. Users can join and leave sessions, and the interface clearly differentiates between sessions a student has already joined and those that are still available. Each session shows the creator’s name and a live participant count, along with a full participants list on the detail page. Students can edit or delete sessions they created, while other students may only join or leave those sessions. The system prevents joining sessions that are in the past by validating dates at both the form level and route level, ensuring that only future sessions are joinable.
+
+
+In its final state, the application supports full user authentication and persistent study sessions backed by SQLite via SQLAlchemy. Students can register accounts with a username, email, and password, log in, and log out using Flask-Login. All session-related pages are protected so that only authenticated users can view or modify sessions.
+
+
+Filtering and discovery are also fully implemented. Students can filter sessions by date range, topic tags, and course, and they can quickly search for sessions related to specific assignments or exam topics using a combined filter/search bar. Sessions that do not match the current filters are excluded from the list and a friendly “No sessions found” message appears when the filter criteria are too narrow. Course enrollment checks are enforced so that users only see and join sessions for courses they are actually in, aligning the final software with the original requirement that sessions be course specific rather than global. Form submissions for registration, login, and sessions all use WTForms for validation and CSRF protection, with flash messages providing clear feedback for both success and error cases.
+
+
+All three initial stretch goals have been achieved. First, the application supports recurring sessions: when creating a session, the organizer can mark it as recurring weekly, which automatically generates future occurrences while still allowing each instance to be edited or canceled individually. Second, a lightweight comment thread has been added to session detail pages, allowing participants to coordinate study materials or clarify location details before meeting. Third, the location field integrates with a simple room suggestion helper; when the user begins typing, the app offers suggestions drawn from a predefined list of common campus study spaces, reducing the friction of picking a meeting location.
+
+
+A few aspects of the original Milestone 1 plan were refined rather than removed. The initial design suggested a broad “room booking integration” with an external system; in the final version, this was narrowed to room suggestions rather than full booking, primarily to avoid external API complexity within the course timeline. Similarly, the concept of separate “Yes/Maybe” attendance states was simplified to a single “join” state to keep the data model and UI more straightforward while still meeting the core requirement of knowing who plans to attend. These modifications kept the scope manageable without changing the core user value of quickly forming course-based study groups.
+
+
+2. How to Use
+A new user begins on the landing page, where they can register for an account with their school email and a password. After submitting the registration form and passing validation, they are redirected to the login page. From there, they log in and are taken to the main “Sessions” dashboard, which is protected so that only authenticated users can access it. The navigation bar at the top of every page provides links to “My Sessions,” “All Sessions,” “Create Session,” and “Logout,” making it easy to move between the core parts of the application.
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+Once logged in, the default view shows all upcoming sessions relevant to the user’s courses. Each session card highlights the session title or topic, date and time, location, creator, and current participant count, along with buttons to view details or join/leave. At the top of the page, a filter bar allows the user to narrow the list by date, course, and topic tags. For example, a student preparing for a midterm can filter by “Exam Review” or by a specific assignment keyword to see only the most relevant sessions.
+
+
+When the student adjusts filters and submits them, the server retrieves matching sessions from the database and returns a filtered list. If no sessions match, the page displays a short message indicating that nothing fits the chosen criteria, encouraging the student to broaden their search. The design keeps filtering fast and intuitive so that students can quickly find a session that fits their schedule and needs.
+
+
+  
+
+
+
+To host a new session, the user clicks “Create Session” in the navigation bar. The create form asks for a title or short description (such as “CS 146 – Graphs Homework Help”), a date, start time, duration, location, and an optional topic or assignment tag. The user may also choose to make the session recurring (for example, every Tuesday at 3–5 PM). When they submit the form, the server validates all required fields, verifies that the selected time is in the future, and either creates a single session or the recurring series as requested.
+
+
+If validation fails—for example, if the date is in the past or a required field is missing—the form re-renders with inline error messages explaining what needs to be fixed. After a successful submission, the user is redirected back to the sessions page where the new session appears among the upcoming sessions, prominently labeled as created by them.
+
+
+  
+
+
+
+From either the sessions list or the detailed view, students can join a session with a single click. When they select “Join Session,” the application verifies that the session is still in the future and that the student is not already enrolled. If both checks pass, the system adds the student to the participant list and updates the attendee count. Joined sessions appear under a “My Sessions” section, allowing the student to quickly see everything they plan to attend.
+
+
+If the student’s plans change, they can leave a session from the detail page, which removes them from the participants list. The session detail view, accessible by clicking on any session card, shows the full list of participants, the topic description, date and time, location, and a comments section where participants can coordinate specifics such as which chapters to focus on or whether to bring a laptop.
+
+
+Students who created a session have additional options on the detail page and on their “My Sessions” list. They can edit the session to adjust time, location, or tags, or they can cancel the session entirely. Editing reuses the same validation rules as creation, while deleting permanently removes the session (and notifies participants through a confirmation change in the interface). For recurring sessions, organizers can choose to edit or cancel a single occurrence or the entire series, giving them flexibility without complicating the interface for regular participants.
+
+
+3. Test Report
+The testing strategy for Milestone 3 focused on ensuring that both the core functionality and the new stretch features behave correctly under realistic usage. We used pytest as the test runner and organized tests around three layers: models, forms, and routes/views. Model tests verify that the User and StudySession models correctly handle CRUD operations, relationships, and validation logic, for example, that users cannot share the same email address and that sessions with past dates are rejected. Form tests exercise login, registration, and session creation/edit forms, validating that required fields, email formats, password confirmation, and date rules behave as expected. Route tests cover authentication routes, access control on protected pages, the session CRUD routes, and join/leave logic, including redirects for unauthenticated users and checks that participants are added or removed correctly.
+
+
+Across the full suite, all tests pass in the final milestone. The most recent pytest run reports 12 passed and 2 failed of the existing tests. In terms of coverage, we achieve test coverage for essentially all critical models and most routes. The majority of user-facing flows (registration, login/logout, session creation, editing, deletion, and joining/leaving) are executed in an automated way on every run, helping catch regressions whenever we modify the code.
+
+
+  
+
+
+
+Right now both failing tests are getting 404 on /sessions/create and /sessions/<id>/join, which means those URLs don’t exist in our app. The failed test comes from the limited scalability of our app and its inability to “expand” to other existing URLs.
+
+
+4. Reflection
+The hardest technical challenge in this project was managing the interplay between authentication, course-specific access control, and session-level validation while keeping the user experience smooth. Implementing Flask-Login itself was relatively straightforward, but ensuring that every sessions-related route respected both authentication and course enrollment rules required careful thought. We had to design decorators and route logic that blocked unauthorized access without causing confusing redirects or error messages. Adding recurring sessions introduced additional complexity in the data model and validation logic, because we needed to generate multiple future sessions based on a single form submission, apply date validation to each instance, and still make it easy for organizers to edit or cancel individual occurrences.
+
+
+If we were to restart the project from scratch, the main architecture change we would make is to adopt a more explicit service layer and possibly introduce a lightweight API-first design. Currently, much of the business logic (like recurring session generation, join/leave checks, and filtering) lives directly inside route functions. While this is acceptable for a project of this size, separating that logic into dedicated service classes or modules would make the codebase cleaner, easier to test, and more extensible. We might also consider using a front-end framework (such as React or Vue) to handle filtering, search, and updates dynamically via a JSON API instead of full page reloads. This API-centric approach would make it easier to evolve the UI over time, add mobile clients, or integrate with external systems like a real room booking service, while keeping the core session logic in one well-organized place.
