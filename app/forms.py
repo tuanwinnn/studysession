@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, BooleanField, DateTimeField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
+from datetime import datetime
 from app.models import User
 
 # Login form for existing users
@@ -11,23 +12,42 @@ class LoginForm(FlaskForm):
 
 # Registration form for new users
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=80)])  # username length constraints
-    email = StringField('Email', validators=[DataRequired(), Email()])                      # required, valid email
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])        # minimum password length
-    password2 = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])  # must match password
+    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=80)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField(
+        'Confirm Password',
+        validators=[DataRequired(), EqualTo('password')]
+    )
     submit = SubmitField('Register')
-    
-    # Custom validator: ensure username is unique
+
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('Username already taken. Please choose a different one.')
-    
-    # Custom validator: ensure email is unique
+
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Email already registered. Please use a different one.')
+
+
+class SessionForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(), Length(max=200)])
+    date = DateTimeField(
+        'Date',
+        format="%Y-%m-%d %H:%M",
+        validators=[DataRequired()],
+    )
+    location = StringField('Location', validators=[DataRequired(), Length(max=200)])
+    topic = TextAreaField('Topic')  # optional
+
+    submit = SubmitField('Create Session')
+
+    def validate_date(self, field):
+        # must be in the future
+        if field.data is not None and field.data <= datetime.utcnow():
+            raise ValidationError("Date must be in the future.")
 
 # Form for creating/editing a study session
 class StudySessionForm(FlaskForm):
