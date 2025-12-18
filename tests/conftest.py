@@ -44,12 +44,11 @@ def user(app):
     A single test user in the DB.
     Assumes User has set_password().
     """
-    with app.app_context():
-        u = User(username="testuser", email="test@example.com")
-        u.set_password("password123")
-        _db.session.add(u)
-        _db.session.commit()
-        return u
+    u = User(username="testuser", email="test@example.com")
+    u.set_password("password123")
+    _db.session.add(u)
+    _db.session.commit()
+    return u
 
 
 @pytest.fixture
@@ -74,14 +73,13 @@ def future_session(app, user):
     Useful for join/leave and CRUD tests.
     Assumes StudySession has a members relationship.
     """
-    with app.app_context():
-        session = StudySession(
-            title="Future Study Session",
-            date=datetime.utcnow() + timedelta(days=1),
-            location="Library 101",
-            topic="Chapters 1–3",
-            creator_id=user.id,
-        )
-        _db.session.add(session)
-        _db.session.commit()
-        return session
+    session = StudySession(
+        title="Future Study Session",
+        date=datetime.utcnow() + timedelta(days=1),
+        location="Library 101",
+        topic="Chapters 1–3",
+        creator_id=user.id,
+    )
+    _db.session.add(session)
+    _db.session.commit()
+    return session
